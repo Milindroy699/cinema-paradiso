@@ -1244,42 +1244,33 @@ const style = document.createElement('style');
 style.textContent = '@keyframes float2{0%,100%{transform:translateY(0);opacity:.28}50%{transform:translateY(-18px);opacity:.7}}';
 document.head.appendChild(style);
 
-// ── Remote sync via MQTT (EMQX public broker — tested & working) ──
-const urlParams = new URLSearchParams(window.location.search);
-const IS_CTRL   = urlParams.get('remote') === 'ctrl1';
-const BROKER    = 'wss://broker.emqx.io:8084/mqtt';
-const TOPIC     = 'cinema-paradiso-milindroy699-v2/slide';
+// ── Remote sync via MQTT ──
+const IS_CTRL = new URLSearchParams(location.search).get('remote') === 'ctrl1';
+const BROKER  = 'wss://broker.emqx.io:8084/mqtt';
+const TOPIC   = 'cinema-paradiso-milindroy699-v3/slide';
 
-const syncBadge = document.getElementById('sync-badge');
-const ctrlBar   = document.getElementById('ctrl-bar');
-const ctrlCtr   = document.getElementById('ctrl-slide-ctr');
-
-if (IS_CTRL) {
-  syncBadge.classList.add('controller');
-  syncBadge.querySelector('span').textContent = 'Controller';
-  ctrlBar.classList.add('visible');
+// All DOM access is deferred to the load event — elements are after this script block
+function setSynced(ok) {
+  const el = document.getElementById('sync-badge');
+  if (el) el.classList.toggle('connected', ok);
 }
 
-function setSynced(ok) { syncBadge.classList.toggle('connected', ok); }
-
 function initMqtt() {
+  if (!window.mqtt) { console.warn('[Sync] window.mqtt not defined'); return; }
+
   const client = window.mqtt.connect(BROKER, {
     clientId: 'cp-' + (IS_CTRL ? 'ctrl' : 'view') + '-' + Math.random().toString(16).slice(2, 8),
-    clean: true,
-    reconnectPeriod: 3000,
-    connectTimeout: 10000,
+    clean: true, reconnectPeriod: 3000, connectTimeout: 10000,
   });
 
   client.on('connect', () => {
     setSynced(true);
-    if (!IS_CTRL) {
-      client.subscribe(TOPIC, { qos: 1 });
-    } else {
-      // On (re)connect, re-broadcast current slide so viewers sync immediately
+    if (IS_CTRL) {
       client.publish(TOPIC, JSON.stringify({ slide: cur }), { qos: 1, retain: true });
+    } else {
+      client.subscribe(TOPIC, { qos: 1 });
     }
   });
-
   client.on('disconnect', () => setSynced(false));
   client.on('offline',    () => setSynced(false));
   client.on('error',      () => setSynced(false));
@@ -1292,11 +1283,12 @@ function initMqtt() {
     } catch (_) {}
   });
 
-  // Wrap goTo to broadcast slide changes from controller
+  // Patch goTo so controller broadcasts every navigation
   const _orig = goTo;
   goTo = function(n) {
     _orig(n);
-    if (ctrlCtr) ctrlCtr.textContent = n + ' / ' + TOTAL;
+    const ctr = document.getElementById('ctrl-slide-ctr');
+    if (ctr) ctr.textContent = n + ' / ' + TOTAL;
     if (IS_CTRL && client.connected) {
       client.publish(TOPIC, JSON.stringify({ slide: n }), { qos: 1, retain: true });
     }
@@ -1304,11 +1296,18 @@ function initMqtt() {
 }
 
 window.addEventListener('load', () => {
+  // DOM is fully ready — safe to query elements declared after this script block
+  if (IS_CTRL) {
+    const badge = document.getElementById('sync-badge');
+    if (badge) { badge.classList.add('controller'); badge.querySelector('span').textContent = 'Controller'; }
+    const bar = document.getElementById('ctrl-bar');
+    if (bar) bar.classList.add('visible');
+  }
+
   const s = document.createElement('script');
-  // MQTT.js v4 — stable browser UMD build with window.mqtt global
-  s.src = 'https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js';
+  s.src    = 'https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js';
   s.onload  = initMqtt;
-  s.onerror = () => console.warn('[Sync] MQTT.js failed to load — sync disabled');
+  s.onerror = () => console.warn('[Sync] MQTT.js failed to load');
   document.head.appendChild(s);
 });
 </script>
