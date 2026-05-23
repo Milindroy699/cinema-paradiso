@@ -1244,17 +1244,16 @@ const style = document.createElement('style');
 style.textContent = '@keyframes float2{0%,100%{transform:translateY(0);opacity:.28}50%{transform:translateY(-18px);opacity:.7}}';
 document.head.appendChild(style);
 
-// ── Remote sync via MQTT ──
-const MQTT_BROKER  = 'wss://broker.hivemq.com:8884/mqtt';
-const MQTT_TOPIC   = 'cinema-paradiso-milindroy699/slide';
-const CTRL_SECRET  = 'ctrl1';
-const urlParams    = new URLSearchParams(window.location.search);
-const IS_CTRL      = urlParams.get('remote') === CTRL_SECRET;
+// ── Remote sync via PeerJS (WebRTC) ──
+const urlParams = new URLSearchParams(window.location.search);
+const IS_CTRL   = urlParams.get('remote') === 'ctrl1';
+// Peer ID rotates daily so stale sessions don't interfere
+const SESSION   = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+const CTRL_ID   = 'cp-ctrl-milindroy699-' + SESSION;
 
-const syncBadge    = document.getElementById('sync-badge');
-const syncDot      = document.getElementById('sync-dot');
-const ctrlBar      = document.getElementById('ctrl-bar');
-const ctrlCtr      = document.getElementById('ctrl-slide-ctr');
+const syncBadge = document.getElementById('sync-badge');
+const ctrlBar   = document.getElementById('ctrl-bar');
+const ctrlCtr   = document.getElementById('ctrl-slide-ctr');
 
 if (IS_CTRL) {
   syncBadge.classList.add('controller');
@@ -1262,60 +1261,68 @@ if (IS_CTRL) {
   ctrlBar.classList.add('visible');
 }
 
-let mqttClient;
-let ignoreNext = false; // prevent echo loop
+let syncPeer;
+let ctrlConns = [];
 
-function initMqtt() {
-  try { mqttClient = mqtt.connect(MQTT_BROKER, {
-    clientId: 'cp-' + Math.random().toString(16).slice(2, 10),
-    clean: true,
-    reconnectPeriod: 3000,
-    connectTimeout: 8000,
-  });
-
-  mqttClient.on('connect', () => {
-    syncBadge.classList.add('connected');
-    if (!IS_CTRL) {
-      mqttClient.subscribe(MQTT_TOPIC, { qos: 1 });
-    }
-  });
-
-  mqttClient.on('reconnect', () => syncBadge.classList.remove('connected'));
-  mqttClient.on('error', () => syncBadge.classList.remove('connected'));
-
-  mqttClient.on('message', (_topic, message) => {
-    if (IS_CTRL) return;
-    try {
-      const { slide } = JSON.parse(message.toString());
-      if (slide && slide !== cur) {
-        ignoreNext = true;
-        goTo(slide);
-      }
-    } catch (_) {}
-  });
-  } catch(e) { console.warn('MQTT connect error:', e); }
+function setSynced(ok) {
+  syncBadge.classList.toggle('connected', ok);
 }
 
-// Publish slide change when controller navigates
+function broadcast(n) {
+  ctrlConns = ctrlConns.filter(c => c.open);
+  ctrlConns.forEach(c => { try { c.send({ slide: n }); } catch(_){} });
+}
+
+function initController() {
+  syncPeer = new Peer(CTRL_ID);
+  syncPeer.on('open', () => setSynced(true));
+  syncPeer.on('connection', conn => {
+    conn.on('open', () => {
+      conn.send({ slide: cur });
+      ctrlConns.push(conn);
+    });
+  });
+  syncPeer.on('disconnected', () => { setSynced(false); syncPeer.reconnect(); });
+  syncPeer.on('error', e => {
+    setSynced(false);
+    if (e.type === 'unavailable-id') {
+      // ID taken by old tab — destroy and retry with fresh peer after a moment
+      syncPeer.destroy();
+      setTimeout(initController, 4000);
+    }
+  });
+}
+
+function initViewer() {
+  syncPeer = new Peer();
+  syncPeer.on('open', tryConnect);
+  syncPeer.on('error', () => { setSynced(false); setTimeout(initViewer, 5000); });
+}
+
+function tryConnect() {
+  const conn = syncPeer.connect(CTRL_ID, { reliable: true });
+  conn.on('open', () => setSynced(true));
+  conn.on('data', d => { if (d && d.slide && d.slide !== cur) goTo(d.slide); });
+  conn.on('close', () => { setSynced(false); setTimeout(tryConnect, 3000); });
+  conn.on('error', () => { setSynced(false); setTimeout(tryConnect, 3000); });
+}
+
+// Wrap goTo so controller broadcasts every navigation
 const _origGoTo = goTo;
 goTo = function(n) {
   _origGoTo(n);
   if (ctrlCtr) ctrlCtr.textContent = n + ' / ' + TOTAL;
-  if (IS_CTRL && mqttClient && mqttClient.connected && !ignoreNext) {
-    mqttClient.publish(MQTT_TOPIC, JSON.stringify({ slide: n }), { qos: 1, retain: true });
-  }
-  ignoreNext = false;
+  if (IS_CTRL) broadcast(n);
 };
 
-// Load MQTT dynamically so it never blocks page render
-function loadMqttAndConnect() {
+function loadPeerJS() {
   const s = document.createElement('script');
-  s.src = 'https://unpkg.com/mqtt/dist/mqtt.min.js';
-  s.onload = initMqtt;
-  s.onerror = () => console.warn('MQTT script failed to load — sync disabled');
+  s.src = 'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js';
+  s.onload = () => IS_CTRL ? initController() : initViewer();
+  s.onerror = () => console.warn('[Sync] PeerJS failed to load');
   document.head.appendChild(s);
 }
-window.addEventListener('load', loadMqttAndConnect);
+window.addEventListener('load', loadPeerJS);
 </script>
 
 <!-- Sync badge -->
