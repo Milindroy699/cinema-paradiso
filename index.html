@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Raleway:ital,wght@0,200;0,300;0,400;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <style>
 :root {
   --gold: #c9a84c;
@@ -1267,7 +1266,7 @@ let mqttClient;
 let ignoreNext = false; // prevent echo loop
 
 function initMqtt() {
-  mqttClient = mqtt.connect(MQTT_BROKER, {
+  try { mqttClient = mqtt.connect(MQTT_BROKER, {
     clientId: 'cp-' + Math.random().toString(16).slice(2, 10),
     clean: true,
     reconnectPeriod: 3000,
@@ -1294,6 +1293,7 @@ function initMqtt() {
       }
     } catch (_) {}
   });
+  } catch(e) { console.warn('MQTT connect error:', e); }
 }
 
 // Publish slide change when controller navigates
@@ -1307,7 +1307,15 @@ goTo = function(n) {
   ignoreNext = false;
 };
 
-initMqtt();
+// Load MQTT dynamically so it never blocks page render
+function loadMqttAndConnect() {
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/mqtt/dist/mqtt.min.js';
+  s.onload = initMqtt;
+  s.onerror = () => console.warn('MQTT script failed to load — sync disabled');
+  document.head.appendChild(s);
+}
+window.addEventListener('load', loadMqttAndConnect);
 </script>
 
 <!-- Sync badge -->
