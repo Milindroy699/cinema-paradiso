@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Raleway:ital,wght@0,200;0,300;0,400;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <style>
 :root {
   --gold: #c9a84c;
@@ -294,6 +295,17 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:#000;font-family:'
 
 /* ── SVG grain overlay ── */
 .grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:1}
+
+/* ── Remote sync UI ── */
+#sync-badge{position:fixed;top:14px;right:14px;z-index:9999;display:flex;align-items:center;gap:7px;background:rgba(0,0,0,.72);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 12px 5px 9px;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:.06em;color:rgba(232,224,208,.7);backdrop-filter:blur(8px);transition:opacity .4s}
+#sync-badge .sync-dot{width:7px;height:7px;border-radius:50%;background:#555;transition:background .4s}
+#sync-badge.connected .sync-dot{background:#4caf50;box-shadow:0 0 6px #4caf50}
+#sync-badge.controller{border-color:rgba(201,168,76,.6);color:var(--gold)}
+#ctrl-bar{position:fixed;bottom:0;left:0;right:0;z-index:9999;display:none;align-items:center;justify-content:space-between;padding:16px 24px 28px;background:linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,.0));gap:16px}
+#ctrl-bar.visible{display:flex}
+.ctrl-btn{flex:1;max-width:140px;padding:18px 0;border:1px solid rgba(201,168,76,.4);border-radius:10px;background:rgba(10,8,5,.85);color:var(--gold);font-family:'Cinzel',serif;font-size:22px;cursor:pointer;transition:background .15s,transform .1s;-webkit-tap-highlight-color:transparent;user-select:none}
+.ctrl-btn:active{background:rgba(201,168,76,.18);transform:scale(.95)}
+#ctrl-slide-ctr{font-family:'Cinzel',serif;font-size:clamp(13px,3vw,18px);color:rgba(232,224,208,.6);letter-spacing:.1em;text-align:center;flex:1}
 </style>
 </head>
 <body>
@@ -1232,6 +1244,84 @@ function toggleBigVid(id, btn) {
 const style = document.createElement('style');
 style.textContent = '@keyframes float2{0%,100%{transform:translateY(0);opacity:.28}50%{transform:translateY(-18px);opacity:.7}}';
 document.head.appendChild(style);
+
+// ── Remote sync via MQTT ──
+const MQTT_BROKER  = 'wss://broker.hivemq.com:8884/mqtt';
+const MQTT_TOPIC   = 'cinema-paradiso-milindroy699/slide';
+const CTRL_SECRET  = 'ctrl1';
+const urlParams    = new URLSearchParams(window.location.search);
+const IS_CTRL      = urlParams.get('remote') === CTRL_SECRET;
+
+const syncBadge    = document.getElementById('sync-badge');
+const syncDot      = document.getElementById('sync-dot');
+const ctrlBar      = document.getElementById('ctrl-bar');
+const ctrlCtr      = document.getElementById('ctrl-slide-ctr');
+
+if (IS_CTRL) {
+  syncBadge.classList.add('controller');
+  syncBadge.querySelector('span').textContent = 'Controller';
+  ctrlBar.classList.add('visible');
+}
+
+let mqttClient;
+let ignoreNext = false; // prevent echo loop
+
+function initMqtt() {
+  mqttClient = mqtt.connect(MQTT_BROKER, {
+    clientId: 'cp-' + Math.random().toString(16).slice(2, 10),
+    clean: true,
+    reconnectPeriod: 3000,
+    connectTimeout: 8000,
+  });
+
+  mqttClient.on('connect', () => {
+    syncBadge.classList.add('connected');
+    if (!IS_CTRL) {
+      mqttClient.subscribe(MQTT_TOPIC, { qos: 1 });
+    }
+  });
+
+  mqttClient.on('reconnect', () => syncBadge.classList.remove('connected'));
+  mqttClient.on('error', () => syncBadge.classList.remove('connected'));
+
+  mqttClient.on('message', (_topic, message) => {
+    if (IS_CTRL) return;
+    try {
+      const { slide } = JSON.parse(message.toString());
+      if (slide && slide !== cur) {
+        ignoreNext = true;
+        goTo(slide);
+      }
+    } catch (_) {}
+  });
+}
+
+// Publish slide change when controller navigates
+const _origGoTo = goTo;
+goTo = function(n) {
+  _origGoTo(n);
+  if (ctrlCtr) ctrlCtr.textContent = n + ' / ' + TOTAL;
+  if (IS_CTRL && mqttClient && mqttClient.connected && !ignoreNext) {
+    mqttClient.publish(MQTT_TOPIC, JSON.stringify({ slide: n }), { qos: 1, retain: true });
+  }
+  ignoreNext = false;
+};
+
+initMqtt();
 </script>
+
+<!-- Sync badge -->
+<div id="sync-badge">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span>Live</span>
+</div>
+
+<!-- Controller bar (only visible in ?remote=ctrl1 mode) -->
+<div id="ctrl-bar">
+  <button class="ctrl-btn" onclick="go(-1)">&#8592;</button>
+  <div id="ctrl-slide-ctr">1 / 21</div>
+  <button class="ctrl-btn" onclick="go(1)">&#8594;</button>
+</div>
+
 </body>
 </html>
