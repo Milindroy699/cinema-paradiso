@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinema Paradiso — Toastmasters Theme Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Raleway:ital,wght@0,200;0,300;0,400;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-d: rgba(201,168,76,0.35);
+  --cream: #e8e0d0;
+  --dark: #060606;
+  --film-h: 54px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100vw;height:100vh;overflow:hidden;background:#000;font-family:'Raleway',sans-serif;color:var(--cream)}
+
+/* ── FILM CHROME ── */
+.fc{position:fixed;left:0;right:0;height:var(--film-h);background:#080808;z-index:100;display:flex;align-items:center;padding:0 8px;gap:7px;overflow:hidden}
+.fc.top{top:0;border-bottom:1px solid #1c1c1c}
+.fc.bot{bottom:0;border-top:1px solid #1c1c1c}
+.sp{min-width:18px;height:24px;border:1.5px solid #222;border-radius:3px;background:#030303;flex-shrink:0}
+.fc-counter{position:fixed;top:0;right:0;height:var(--film-h);z-index:110;display:flex;align-items:center;padding-right:20px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.25em;color:rgba(201,168,76,.3)}
+
+/* ── SLIDES ── */
+.deck{position:fixed;top:var(--film-h);left:0;right:0;bottom:var(--film-h)}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .9s ease;pointer-events:none;overflow:hidden}
+.slide.active{opacity:1;pointer-events:all}
+
+/* ── NAV ── */
+.nav{position:fixed;top:50%;transform:translateY(-50%);z-index:200;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.04);color:rgba(255,255,255,.28);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;backdrop-filter:blur(4px)}
+.nav:hover{background:rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+#pBtn{left:12px}#nBtn{right:12px}
+
+/* ── PROGRESS ── */
+.prog{position:fixed;bottom:calc(var(--film-h) + 10px);left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:200}
+.pd{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.14);cursor:pointer;transition:all .3s}
+.pd.on{background:var(--gold);transform:scale(1.4)}
+.kbd{position:fixed;bottom:calc(var(--film-h) + 8px);right:20px;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.1);z-index:200}
+.fs-btn{position:fixed;top:calc(var(--film-h) + 10px);right:14px;z-index:200;background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.25);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:11px;letter-spacing:.1em;transition:all .3s}
+.fs-btn:hover{border-color:var(--gold-d);color:var(--gold)}
+
+/* ── SHARED ATOMS ── */
+.z2{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.65) 100%);pointer-events:none;z-index:1}
+.lbl{font-size:10px;font-weight:600;letter-spacing:.45em;color:var(--gold-d);text-transform:uppercase;margin-bottom:18px}
+.h1{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(38px,6.5vw,78px);color:var(--cream);letter-spacing:.06em;line-height:1.1;text-align:center}
+.h2{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(26px,4.2vw,52px);color:var(--cream);letter-spacing:.05em;line-height:1.2;text-align:center}
+.h3{font-family:'Cinzel',serif;font-weight:400;font-size:clamp(18px,2.6vw,34px);color:var(--cream);text-align:center;line-height:1.3}
+.body{font-weight:300;font-size:clamp(14px,1.7vw,20px);color:rgba(232,224,208,.65);line-height:1.75;text-align:center;max-width:680px}
+.gold{color:var(--gold)}
+.italic{font-style:italic}
+.rule{width:180px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:22px auto}
+.rule-sm{width:46px;height:1px;background:var(--gold);opacity:.4;margin:18px auto}
+.qt{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(18px,2.4vw,28px);color:var(--cream);text-align:center;line-height:1.65;max-width:680px}
+.attr{font-size:12px;font-weight:300;letter-spacing:.22em;color:rgba(201,168,76,.5);margin-top:14px;text-transform:uppercase}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(201,168,76,.35);border-radius:24px;padding:6px 18px;font-size:10px;letter-spacing:.35em;color:var(--gold);text-transform:uppercase;margin-bottom:26px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+/* ══ S1: TITLE ══ */
+.s1{background:radial-gradient(ellipse at 50% 40%,#1a1000,#0a0800 45%,#000 100%)}
+.s1-beam{position:absolute;top:0;left:50%;transform:translateX(-50%);width:280px;height:100%;background:linear-gradient(180deg,rgba(255,200,80,.065) 0%,rgba(255,200,80,.02) 40%,transparent 75%);clip-path:polygon(25% 0%,75% 0%,100% 100%,0% 100%);pointer-events:none}
+.s1-reel{width:clamp(80px,12vw,130px);height:clamp(80px,12vw,130px);margin-bottom:26px;animation:spin 10s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.s1-title{font-family:'Cinzel',serif;font-weight:900;font-size:clamp(44px,8.5vw,100px);letter-spacing:.15em;background:linear-gradient(135deg,#6a4e14 0%,#c9a84c 25%,#f0d080 50%,#c9a84c 75%,#6a4e14 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;animation:gpulse 4s ease-in-out infinite alternate}
+@keyframes gpulse{from{filter:drop-shadow(0 0 20px rgba(201,168,76,.25))}to{filter:drop-shadow(0 0 50px rgba(201,168,76,.55))}}
+.s1-sub{font-weight:200;font-size:clamp(11px,1.4vw,15px);letter-spacing:.55em;color:rgba(201,168,76,.5);text-transform:uppercase;text-align:center;margin-top:12px}
+.s1-tag{font-weight:300;font-size:clamp(12px,1.3vw,15px);letter-spacing:.25em;color:rgba(232,224,208,.28);text-align:center;margin-top:28px}
+
+/* ══ S2: WHY ══ */
+.s2{background:radial-gradient(ellipse at 50% 20%,#05050f,#020206 100%)}
+.s2-beam{position:absolute;top:0;left:55%;width:220px;height:100%;background:linear-gradient(180deg,rgba(160,160,255,.045) 0%,transparent 65%);clip-path:polygon(20% 0%,80% 0%,100% 100%,0% 100%);pointer-events:none}
+.s2-q{font-family:'Cinzel',serif;font-size:clamp(30px,5.2vw,58px);font-weight:400;color:var(--cream);text-align:center;line-height:1.4;max-width:780px}
+.seats{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:3px;padding:0 20px;align-items:flex-end}
+.seat{width:22px;height:34px;background:#07071a;border:1px solid #0e0e25;border-radius:4px 4px 0 0}
+
+/* ══ S3: GUESS THE FILM ══ */
+.s3-frame{position:relative;border:1px solid rgba(201,168,76,.22);background:#000;box-shadow:0 0 48px rgba(201,168,76,.07),0 0 120px rgba(0,0,0,.6)}
+.s3-frame::before{content:'';position:absolute;top:-1px;left:-1px;width:18px;height:18px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);z-index:2}
+.s3-frame::after{content:'';position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);z-index:2}
+.s3-img{display:block;width:clamp(220px,32vw,420px);height:clamp(150px,24vh,270px);object-fit:cover;object-position:center 30%;filter:brightness(.8) contrast(1.06);position:relative;z-index:1}
+.s3-qmark{position:absolute;bottom:0;right:0;font-family:'Cinzel',serif;font-size:clamp(48px,7vw,88px);font-weight:700;color:var(--gold);opacity:.18;line-height:1;padding:0 8px 0 0;pointer-events:none;z-index:2;text-shadow:0 0 40px var(--gold)}
+
+/* ══ S4: SMEDLEY ══ */
+.s4-badge{width:clamp(58px,8vw,88px);height:clamp(58px,8vw,88px);border:1.5px solid rgba(201,168,76,.38);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(26px,4vw,44px);margin-bottom:22px}
+
+/* ══ S4: PILLARS ══ */
+.s4{background:radial-gradient(ellipse at center,#07070f,#020204 100%)}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,22px);max-width:clamp(580px,78vw,880px);padding:0 40px}
+.pillar{border:1px solid rgba(201,168,76,.16);background:rgba(201,168,76,.025);border-radius:8px;padding:clamp(16px,2.5vw,26px) clamp(12px,2vw,20px);text-align:center;transition:border-color .4s,background .4s;position:relative}
+.pillar:hover{border-color:rgba(201,168,76,.45);background:rgba(201,168,76,.055)}
+.pillar::before{content:'';position:absolute;top:0;left:25%;right:25%;height:1px;background:var(--gold);opacity:.4}
+.pi{font-size:clamp(24px,3.5vw,38px);margin-bottom:10px;display:block}
+.pn{font-family:'Cinzel',serif;font-size:clamp(11px,1.4vw,14px);letter-spacing:.22em;color:var(--gold);font-weight:600}
+
+/* ══ S5: REALITY ══ */
+.s5{background:#060606}
+.s5-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 35%,rgba(255,255,255,.022) 0%,transparent 50%),#060606}
+.s5-scratch{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,.007) 80px,rgba(255,255,255,.007) 81px);pointer-events:none}
+.s5-frame{border:1px solid rgba(255,255,255,.1);padding:clamp(22px,3vw,42px);max-width:680px;position:relative}
+.s5-frame::before{content:'';position:absolute;top:-1px;left:-1px;width:22px;height:22px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.s5-frame::after{content:'';position:absolute;bottom:-1px;right:-1px;width:22px;height:22px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+.s5-images{display:flex;gap:clamp(16px,2.5vw,28px);margin-top:18px;align-items:center}
+.s5-img-wrap{text-align:center}
+.s5-img-inner{position:relative;display:inline-block}
+.s5-img-inner::before{content:'';position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);z-index:1}
+.s5-img-inner::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);z-index:1}
+.s5-img-inner img{display:block;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
+.s5-img-wrap.portrait .s5-img-inner img{width:clamp(130px,14vw,185px);height:clamp(175px,24vh,245px);filter:grayscale(1) contrast(1.08)}
+.s5-img-wrap.landscape .s5-img-inner img{width:clamp(230px,30vw,360px);height:clamp(150px,20vh,210px)}
+.s5-img-cap{font-family:'Cinzel',serif;font-size:clamp(9px,1vw,11px);letter-spacing:.22em;color:var(--gold);margin-top:8px;text-transform:uppercase}
+.s5-img-sub{font-size:clamp(8px,.88vw,10px);letter-spacing:.08em;color:rgba(255,255,255,.28);margin-top:3px}
+
+/* ══ S6: INTERACTIVE ══ */
+.s6{background:radial-gradient(ellipse at center,#080510,#030105 100%)}
+.s6-hand{font-size:clamp(52px,8vw,88px);margin-bottom:18px;animation:wave 2s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(0)}25%{transform:rotate(16deg)}75%{transform:rotate(-5deg)}}
+
+/* ══ S7: COLOR ══ */
+.s7{background:radial-gradient(ellipse at 60% 40%,#190900,#070300 100%)}
+.palettes{display:flex;gap:clamp(14px,2.8vw,36px);align-items:flex-start;margin-top:22px}
+.pal-block{text-align:center}
+.swatches{display:flex;gap:4px;margin-bottom:10px}
+.sw{width:clamp(28px,4vw,52px);height:clamp(50px,7.5vw,86px);border-radius:4px}
+.pal-name{font-family:'Cinzel',serif;font-size:clamp(11px,1.4vw,14px);letter-spacing:.2em;color:rgba(200,200,200,.7)}
+.pal-sub{font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.3);margin-top:5px}
+.vs{font-family:'Cinzel',serif;font-size:clamp(13px,1.8vw,18px);color:rgba(255,255,255,.12);margin-top:30px}
+/* Arrakis */
+.arr .sw:nth-child(1){background:#c97a1a}
+.arr .sw:nth-child(2){background:#8c4a00}
+.arr .sw:nth-child(3){background:#f0c060}
+.arr .sw:nth-child(4){background:#5c3000}
+/* Caladan */
+.cal .sw:nth-child(1){background:#1a4a6c}
+.cal .sw:nth-child(2){background:#0d2a40}
+.cal .sw:nth-child(3){background:#2a6080}
+.cal .sw:nth-child(4){background:#061520}
+/* Geidi Prime — infrared B&W (Villeneuve Dune Pt 2) */
+.gei .sw:nth-child(1){background:#d6d6d6}
+.gei .sw:nth-child(2){background:#888888}
+.gei .sw:nth-child(3){background:#2e2e2e}
+.gei .sw:nth-child(4){background:#080808}
+
+/* ══ S8: DUNE VIDEO ══ */
+.s8-vid-wrap{position:relative;border:1px solid rgba(201,168,76,.18);margin-top:16px;align-self:stretch}
+.s8-vid-wrap::before{content:'';position:absolute;top:-1px;left:-1px;width:16px;height:16px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);z-index:2;pointer-events:none}
+.s8-vid-wrap::after{content:'';position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);z-index:2;pointer-events:none}
+.s8-vid{display:block;width:clamp(380px,65vw,820px);height:clamp(180px,30vh,360px);object-fit:cover;background:#000}
+.s8-vid-ctrl{display:flex;align-items:center;gap:8px;margin-top:8px}
+.s8-play-btn{background:none;border:1px solid rgba(201,168,76,.45);color:var(--gold);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.s8-play-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold)}
+.s8-play-lbl{font-family:'Cinzel',serif;font-size:clamp(7px,.85vw,9px);letter-spacing:.22em;color:rgba(201,168,76,.45);text-transform:uppercase}
+
+/* ══ BIG VIDEO SLIDES ══ */
+.big-vid-frame{position:relative;border:1px solid rgba(201,168,76,.22);margin-top:18px}
+.big-vid-frame::before{content:'';position:absolute;top:-1px;left:-1px;width:18px;height:18px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);z-index:2;pointer-events:none}
+.big-vid-frame::after{content:'';position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);z-index:2;pointer-events:none}
+.big-vid{display:block;width:clamp(480px,76vw,960px);height:clamp(270px,46vh,560px);object-fit:cover;background:#000}
+.big-vid-ctrl{display:flex;align-items:center;gap:12px;margin-top:12px}
+.big-play-btn{background:none;border:1px solid rgba(201,168,76,.5);color:var(--gold);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.big-play-btn:hover{background:rgba(201,168,76,.18);border-color:var(--gold)}
+.big-vid-lbl{font-family:'Cinzel',serif;font-size:clamp(9px,1.1vw,12px);letter-spacing:.25em;color:rgba(201,168,76,.55);text-transform:uppercase}
+
+/* ══ QUIZ SLIDES ══ */
+.quiz-row{display:flex;align-items:center;gap:clamp(28px,4.5vw,64px);margin-top:18px;max-width:960px;width:100%}
+.quiz-img-frame{position:relative;border:1px solid rgba(201,168,76,.25);flex-shrink:0}
+.quiz-img-frame::before{content:'';position:absolute;top:-1px;left:-1px;width:16px;height:16px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);z-index:2}
+.quiz-img-frame::after{content:'';position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);z-index:2}
+.quiz-img{display:block;filter:brightness(.85) contrast(1.05)}
+.quiz-img.portrait{width:clamp(200px,24vw,320px);height:auto;object-fit:unset}
+.quiz-img.landscape{width:clamp(260px,34vw,440px);height:clamp(160px,26vh,300px)}
+.quiz-txt{flex:1;text-align:left}
+.quiz-prompt{font-family:'Cinzel',serif;font-size:clamp(10px,1.2vw,13px);letter-spacing:.28em;color:var(--gold-d);text-transform:uppercase;margin-bottom:14px}
+.quiz-q-main{font-family:'Cinzel',serif;font-size:clamp(20px,3vw,36px);color:var(--cream);line-height:1.4;margin-bottom:10px}
+.quiz-clue{font-size:clamp(13px,1.5vw,17px);color:rgba(255,255,255,.45);letter-spacing:.08em;line-height:1.6;margin-top:10px}
+.quiz-hint{font-size:clamp(11px,1.2vw,14px);letter-spacing:.14em;color:rgba(201,168,76,.5);margin-top:18px;font-style:italic}
+.quiz-answer{opacity:0;transition:opacity .5s ease;pointer-events:none;margin-top:16px;border-left:2px solid rgba(201,168,76,.3);padding-left:14px}
+.quiz-answer.revealed{opacity:1;pointer-events:auto}
+.qa-label{font-size:clamp(8px,.85vw,10px);letter-spacing:.28em;color:rgba(201,168,76,.45);text-transform:uppercase;margin-bottom:3px}
+.qa-ans{font-family:'Cinzel',serif;font-size:clamp(12px,1.4vw,16px);color:var(--cream);letter-spacing:.06em;line-height:1.5}
+.quiz-reveal-btn{margin-top:16px;background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);font-family:'Cinzel',serif;font-size:clamp(9px,1vw,11px);letter-spacing:.3em;text-transform:uppercase;padding:7px 20px;border-radius:24px;cursor:pointer;transition:all .3s}
+.quiz-reveal-btn:hover{background:rgba(201,168,76,.12);border-color:var(--gold)}
+.quiz-reveal-btn.done{opacity:.3;pointer-events:none}
+
+/* ══ DIRECTORS SLIDE ══ */
+.dir-grid{display:flex;gap:clamp(16px,2.8vw,36px);margin-top:20px;align-items:flex-start;justify-content:center}
+.dir-card{display:flex;flex-direction:column;align-items:center;flex:1;max-width:clamp(160px,20vw,230px)}
+.dir-poster{position:relative;border:1px solid rgba(201,168,76,.28);width:100%}
+.dir-poster::before{content:'';position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:1.5px solid var(--gold);border-left:1.5px solid var(--gold);z-index:2}
+.dir-poster::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:1.5px solid var(--gold);border-right:1.5px solid var(--gold);z-index:2}
+.dir-poster img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;object-position:center top;filter:brightness(.82) contrast(1.05)}
+.dir-poster-ph{width:100%;aspect-ratio:2/3;background:rgba(201,168,76,.04);display:flex;align-items:center;justify-content:center;font-size:clamp(28px,4vw,48px);opacity:.3}
+.dir-name{font-family:'Cinzel',serif;font-size:clamp(9px,1.1vw,12px);letter-spacing:.2em;color:var(--gold);margin-top:10px;text-align:center;font-weight:600}
+.dir-film{font-size:clamp(8px,.9vw,10px);letter-spacing:.12em;color:rgba(255,255,255,.35);margin-top:4px;text-align:center}
+.dir-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;justify-content:center;opacity:0;transition:opacity .5s ease;pointer-events:none}
+.dir-tags.revealed{opacity:1;pointer-events:auto}
+.dir-reveal-btn{margin-top:18px;background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);font-family:'Cinzel',serif;font-size:clamp(9px,1vw,11px);letter-spacing:.3em;text-transform:uppercase;padding:8px 22px;border-radius:24px;cursor:pointer;transition:all .3s}
+.dir-reveal-btn:hover{background:rgba(201,168,76,.12);border-color:var(--gold)}
+.dir-reveal-btn.done{opacity:.3;pointer-events:none}
+.dir-tag{font-size:clamp(7px,.75vw,9px);letter-spacing:.18em;border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:2px 8px;color:rgba(201,168,76,.5);text-transform:uppercase}
+
+/* ══ S9: COLOR ACTIVITY ══ */
+.s9-act{background:radial-gradient(ellipse at center,#060606,#010101)}
+.s8-orbs{display:flex;gap:clamp(16px,3vw,36px);margin-top:28px}
+.orb-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+.orb{width:clamp(62px,10vw,108px);height:clamp(62px,10vw,108px);border-radius:50%}
+.orb-lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28)}
+
+/* ══ S9: DIALOGUE ══ */
+.s9{background:radial-gradient(ellipse at 40% 70%,#030508,#010103 100%)}
+.s9-cave{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(20,32,18,.6) 0%,transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(5,10,4,.8) 0%,transparent 40%)}
+.drip{position:absolute;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(80,120,80,.12),transparent)}
+.gollum-row{display:flex;align-items:center;gap:clamp(28px,4vw,60px);margin-top:0}
+.gollum-img-wrap{position:relative;flex-shrink:0;border:1px solid rgba(110,150,110,.2)}
+.gollum-img-wrap::before{content:'';position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:1.5px solid rgba(110,150,110,.5);border-left:1.5px solid rgba(110,150,110,.5);z-index:2}
+.gollum-img-wrap::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;border-bottom:1.5px solid rgba(110,150,110,.5);border-right:1.5px solid rgba(110,150,110,.5);z-index:2}
+.gollum-img{display:block;width:clamp(140px,18vw,230px);height:clamp(190px,28vh,310px);object-fit:cover;object-position:center top;filter:brightness(.7) contrast(1.12) saturate(.4)}
+.gollum{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(20px,3.2vw,40px);text-align:left;line-height:1.5;color:rgba(232,224,208,.9);max-width:560px}
+.gollum-attr{font-size:clamp(12px,1.4vw,15px);letter-spacing:.15em;color:rgba(110,150,110,.55);margin-top:18px;text-transform:uppercase}
+
+/* ══ S10: PUZZLE REDESIGN ══ */
+.pz-canvas{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.pz-frag{position:absolute;border:1px solid rgba(201,168,76,.14);background:rgba(201,168,76,.02)}
+@keyframes pz-float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(calc(var(--r,0deg) + 4deg))}}
+@keyframes pz-float2{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(11px) rotate(calc(var(--r,0deg) - 3deg))}}
+@keyframes pz-emerge{0%,100%{opacity:.22}55%{opacity:.42}}
+.pz-motif{position:absolute;font-family:'Cinzel',serif;font-size:clamp(7px,.72vw,9px);letter-spacing:.32em;text-transform:uppercase;color:rgba(201,168,76,.32);pointer-events:none;line-height:1.7;animation:pz-emerge 5s ease-in-out infinite}
+.pz-motif-sym{display:block;font-size:clamp(16px,2vw,22px);margin-bottom:4px;opacity:.35}
+@keyframes pz-glow-pulse{0%,100%{filter:drop-shadow(0 0 6px rgba(201,168,76,.3))}50%{filter:drop-shadow(0 0 18px rgba(201,168,76,.7))}}
+.pz-reel-svg{display:block;width:clamp(210px,26vw,290px);height:clamp(210px,26vw,290px);animation:pz-glow-pulse 4s ease-in-out infinite}
+@keyframes pz-dash{to{stroke-dashoffset:-40}}
+.pz-flow{animation:pz-dash 3s linear infinite}
+.pz-flow-slow{animation:pz-dash 6s linear infinite}
+
+/* ══ S11: MOVEMENT / KUROSAWA ══ */
+.s11{background:radial-gradient(ellipse at 40% 45%,#04040e,#010108 100%)}
+.s11-lines{position:absolute;inset:0;background:repeating-linear-gradient(-30deg,transparent,transparent 40px,rgba(180,180,255,.008) 40px,rgba(180,180,255,.008) 42px)}
+.mvt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.4vw,16px);max-width:clamp(500px,70vw,780px);margin-top:16px}
+.mvt-card{border:1px solid rgba(201,168,76,.14);background:rgba(201,168,76,.02);border-radius:6px;padding:clamp(10px,1.5vw,16px) clamp(8px,1.2vw,14px);text-align:center;position:relative;transition:border-color .4s}
+.mvt-card:hover{border-color:rgba(201,168,76,.4)}
+.mvt-card::before{content:'';position:absolute;top:0;left:28%;right:28%;height:1px;background:var(--gold);opacity:.32}
+.mvt-icon{font-size:clamp(18px,2.4vw,26px);margin-bottom:6px;display:block}
+.mvt-name{font-family:'Cinzel',serif;font-size:clamp(9px,1.1vw,12px);letter-spacing:.2em;color:var(--gold);font-weight:600;margin-bottom:3px}
+.mvt-desc{font-size:clamp(9px,.95vw,11px);letter-spacing:.06em;color:rgba(255,255,255,.28);line-height:1.45}
+
+/* ══ S12: MOVEMENT PLAYERS ══ */
+.mvt-players{display:flex;gap:clamp(10px,1.8vw,22px);margin-top:12px;width:100%;max-width:clamp(500px,70vw,780px)}
+.mvt-player{flex:1;position:relative}
+.mvt-vid{display:block;width:100%;height:clamp(110px,15vh,190px);object-fit:cover;background:#000;border:1px solid rgba(201,168,76,.18)}
+.mvt-ctrl{display:flex;align-items:center;gap:8px;padding:6px 2px 2px}
+.mvt-play-btn{background:none;border:1px solid rgba(201,168,76,.45);color:var(--gold);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0;line-height:1}
+.mvt-play-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold)}
+.mvt-vid-lbl{font-family:'Cinzel',serif;font-size:clamp(7px,.85vw,9px);letter-spacing:.22em;color:rgba(201,168,76,.55);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ══ S13: FANTASY ══ */
+.fantasy-grid{display:flex;gap:clamp(12px,2.2vw,28px);margin-top:4px;max-width:clamp(540px,76vw,860px)}
+.fantasy-card{flex:1;border:1px solid rgba(201,168,76,.13);background:rgba(201,168,76,.025);border-radius:8px;padding:clamp(12px,1.8vw,20px) clamp(10px,1.5vw,18px);text-align:center;position:relative}
+.fantasy-card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:var(--gold);opacity:.25}
+.fantasy-icon{font-size:clamp(22px,3.2vw,34px);display:block;margin-bottom:8px}
+.fantasy-title{font-family:'Cinzel',serif;font-size:clamp(9px,1.05vw,11px);letter-spacing:.22em;color:var(--gold);font-weight:600;margin-bottom:6px;text-transform:uppercase}
+.fantasy-desc{font-size:clamp(10px,1.05vw,12px);color:rgba(232,224,208,.42);line-height:1.6;letter-spacing:.04em}
+.s12{background:radial-gradient(ellipse at 50% 40%,#060310,#020108 100%)}
+.stars-layer{position:absolute;inset:0;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes twinkle{0%,100%{opacity:.08}50%{opacity:var(--op)}}
+.s12-moon{font-size:clamp(58px,10vw,96px);margin-bottom:18px;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+
+/* ══ S13: SUMMARY ══ */
+.s13{background:radial-gradient(ellipse at center,#080808,#020202 100%)}
+.hex-wrap{position:relative;width:clamp(220px,36vw,380px);height:clamp(220px,36vw,380px);margin:10px auto}
+.contrarian-wrap{margin-top:14px;border-top:1px solid rgba(201,168,76,.14);padding-top:12px;max-width:clamp(500px,72vw,820px);width:100%}
+.contrarian-lbl{font-size:clamp(8px,.88vw,10px);letter-spacing:.38em;color:rgba(201,168,76,.4);text-transform:uppercase;text-align:center;margin-bottom:10px}
+.contrarian-row{display:flex;align-items:flex-start;gap:clamp(12px,2.5vw,28px);justify-content:center}
+.contrarian-ex{flex:1;max-width:340px;background:rgba(201,168,76,.03);border:1px solid rgba(201,168,76,.1);border-radius:6px;padding:clamp(8px,1.2vw,12px) clamp(10px,1.5vw,16px);position:relative}
+.contrarian-ex::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:rgba(201,168,76,.28);border-radius:6px 0 0 6px}
+.contrarian-dir{display:block;font-family:'Cinzel',serif;font-size:clamp(9px,1vw,11px);letter-spacing:.18em;color:var(--gold);margin-bottom:5px}
+.contrarian-note{display:block;font-size:clamp(10px,1.1vw,13px);color:rgba(232,224,208,.45);line-height:1.55;letter-spacing:.04em;font-style:italic}
+.hex-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border:1px solid rgba(201,168,76,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;background:rgba(201,168,76,.045)}
+.hnode{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px}
+.hnode-icon{font-size:clamp(18px,2.8vw,26px)}
+.hnode-lbl{font-family:'Cinzel',serif;font-size:clamp(7px,.9vw,9px);letter-spacing:.16em;color:var(--gold)}
+
+/* ══ S14: CLOSING ══ */
+.s14{background:radial-gradient(ellipse at center,#0f0900,#040200 100%)}
+.candle{font-size:clamp(52px,8vw,80px);margin-bottom:22px;animation:flicker 2s ease-in-out infinite}
+@keyframes flicker{0%,100%{transform:scale(1);opacity:.9}25%{transform:scale(1.02);opacity:1}50%{transform:scale(.98) rotate(.8deg);opacity:.82}75%{transform:scale(1.01) rotate(-.4deg);opacity:.95}}
+.closing-q{font-family:'Cinzel',serif;font-weight:400;font-size:clamp(22px,4.2vw,50px);color:var(--cream);text-align:center;line-height:1.45;letter-spacing:.05em;max-width:680px}
+.credits{font-weight:200;font-size:11px;letter-spacing:.38em;color:rgba(201,168,76,.28);text-transform:uppercase;margin-top:38px}
+
+/* ── SVG grain overlay ── */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:1}
+</style>
+</head>
+<body>
+
+<!-- SVG noise filter for film grain -->
+<svg style="position:fixed;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <filter id="gf">
+    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch" result="n"/>
+    <feColorMatrix type="saturate" values="0" in="n" result="g"/>
+    <feBlend in="SourceGraphic" in2="g" mode="overlay" result="blend"/>
+    <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+  </filter>
+</svg>
+<div class="grain" style="background:rgba(255,255,255,0.032);filter:url(#gf)"></div>
+
+<!-- Film chrome top/bottom -->
+<div class="fc top" id="fcTop"></div>
+<div class="fc bot" id="fcBot"></div>
+<div class="fc-counter" id="ctr">01 / 14</div>
+
+<!-- Fullscreen button -->
+<button class="fs-btn" onclick="toggleFS()" title="Fullscreen">⛶ FS</button>
+
+<!-- Deck -->
+<div class="deck">
+
+<!-- ══════════════════════════════════════
+     SLIDE 1 · TITLE
+════════════════════════════════════════ -->
+<div class="slide active" data-n="1">
+  <div class="s1"><!-- scoped bg applied on .s1 wrapper -->
+    <div class="s1-beam"></div>
+    <div class="vignette"></div>
+    <div class="z2">
+      <!-- Film Reel SVG -->
+      <svg class="s1-reel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="96" fill="#0a0a0a" stroke="#252525" stroke-width="1.5"/>
+        <circle cx="100" cy="100" r="76" fill="none" stroke="#141414" stroke-width="26"/>
+        <line x1="100" y1="100" x2="100" y2="22" stroke="#c9a84c" stroke-width="2.5" opacity=".7"/>
+        <line x1="100" y1="100" x2="166" y2="138" stroke="#c9a84c" stroke-width="2.5" opacity=".7"/>
+        <line x1="100" y1="100" x2="34" y2="138" stroke="#c9a84c" stroke-width="2.5" opacity=".7"/>
+        <circle cx="100" cy="43" r="10" fill="#050505" stroke="#c9a84c" stroke-width="1.5" opacity=".6"/>
+        <circle cx="153" cy="124" r="10" fill="#050505" stroke="#c9a84c" stroke-width="1.5" opacity=".6"/>
+        <circle cx="47" cy="124" r="10" fill="#050505" stroke="#c9a84c" stroke-width="1.5" opacity=".6"/>
+        <circle cx="100" cy="7"  r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="151" cy="25" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="186" cy="65" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="193" cy="115" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="166" cy="159" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="122" cy="186" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="78"  cy="186" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="34"  cy="159" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="7"   cy="115" r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="14"  cy="65"  r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="49"  cy="25"  r="4" fill="#020202" stroke="#1f1f1f" stroke-width="1"/>
+        <circle cx="100" cy="100" r="19" fill="#0d0d0d" stroke="#c9a84c" stroke-width="1.5" opacity=".8"/>
+        <circle cx="100" cy="100" r="7" fill="#c9a84c" opacity=".6"/>
+        <circle cx="100" cy="100" r="3" fill="#080808"/>
+      </svg>
+
+      <div class="s1-title">CINEMA PARADISO</div>
+      <div class="rule"></div>
+      <div class="s1-sub">A Toastmasters Theme Master Journey</div>
+      <div class="s1-tag">Where light becomes story &nbsp;·&nbsp; Where story becomes life</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 2 · WHY CINEMA?
+════════════════════════════════════════ -->
+<div class="slide" data-n="2">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 20%,#05050f,#020206)"></div>
+  <div class="s2-beam"></div>
+  <!-- dust particles injected by JS -->
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="lbl">The First Question</div>
+    <div class="s2-q">Why do you<br><span class="gold">watch films?</span></div>
+    <div class="rule-sm" style="margin-top:26px"></div>
+    <div class="quiz-answer" id="qa-s2" style="margin-top:18px;border-left:none;padding-left:0;text-align:center">
+      <div class="body">Escape &nbsp;·&nbsp; Emotion &nbsp;·&nbsp; Understanding &nbsp;·&nbsp; Wonder</div>
+    </div>
+    <button class="quiz-reveal-btn" style="margin-top:14px" onclick="revealQuiz('qa-s2',this)">Reveal ▾</button>
+  </div>
+  <div class="seats" id="seatRow"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 3 · GUESS THE FILM
+════════════════════════════════════════ -->
+<div class="slide" data-n="3">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 35% 50%,#06060e,#010108)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 clamp(30px,5vw,70px);gap:0;flex-direction:row;align-items:center;justify-content:center;width:100%;max-width:1000px">
+    <!-- Left: question text -->
+    <div style="flex:1;text-align:left;padding-right:clamp(24px,4vw,56px)">
+      <div class="pill" style="justify-content:flex-start"><div class="dot"></div>Audience Moment</div>
+      <div class="h2" style="margin-top:18px;text-align:left;font-size:clamp(28px,4.5vw,58px)">Can you name<br>this <span class="gold">film?</span></div>
+      <div class="rule-sm" style="margin-top:22px;margin-left:0;width:60px"></div>
+      <div class="body" style="margin-top:16px;text-align:left;max-width:320px;opacity:.55;font-size:clamp(12px,1.3vw,16px)">Look closely.<br>What world is this?<br>What year? What feeling?</div>
+    </div>
+    <!-- Right: film still -->
+    <div style="flex:1;display:flex;justify-content:center">
+      <div class="s3-frame">
+        <img src="Skynet.jpg" alt="Guess the film" class="s3-img">
+        <div class="s3-qmark">?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 4 · TOASTMASTERS + SMEDLEY
+════════════════════════════════════════ -->
+<div class="slide" data-n="4">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%,#0c0800,#050300)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;max-width:820px;gap:0">
+    <div class="s4-badge">🎭</div>
+    <div class="lbl">The Art of Storytelling</div>
+    <div class="h2">Toastmasters &amp; Cinema</div>
+    <div class="rule"></div>
+    <div class="qt">"In Toastmasters, we learn to do by doing."</div>
+    <div class="attr">— Ralph C. Smedley &nbsp;·&nbsp; Founder &nbsp;·&nbsp; 1924</div>
+    <div class="rule-sm" style="margin-top:28px"></div>
+    <div class="body" style="margin-top:14px">
+      Every great film is a masterclass in communication.<br>
+      Every speaker is a storyteller. Every story — a film waiting to happen.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 4 · SIX PILLARS
+════════════════════════════════════════ -->
+<div class="slide" data-n="5">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,#07070f,#020204)"></div>
+  <div class="vignette"></div>
+  <div class="z2">
+    <div class="lbl">The Anatomy of Cinema</div>
+    <div class="h2" style="margin-bottom:30px">Six Elements of Cinema</div>
+    <div class="pillars">
+      <div class="pillar"><span class="pi">🎞️</span><div class="pn">Reality</div></div>
+      <div class="pillar"><span class="pi">🎨</span><div class="pn">Color</div></div>
+      <div class="pillar"><span class="pi">💬</span><div class="pn">Dialogue</div></div>
+      <div class="pillar"><span class="pi">🧩</span><div class="pn">Puzzle</div></div>
+      <div class="pillar"><span class="pi">⚡</span><div class="pn">Movement</div></div>
+      <div class="pillar"><span class="pi">✨</span><div class="pn">Fantasy</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 5 · REALITY
+════════════════════════════════════════ -->
+<div class="slide" data-n="6">
+  <div class="s5-bg"></div>
+  <div class="s5-scratch"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="lbl">Element I &nbsp;·&nbsp; Reality</div>
+    <div class="h2" style="margin-bottom:16px">The Mirror of <span class="gold">Truth</span></div>
+    <div class="s5-images">
+      <!-- Pather Panchali — portrait poster, greyscale -->
+      <div class="s5-img-wrap portrait">
+        <div class="s5-img-inner">
+          <img src="PatherPachali.jpeg" alt="Pather Panchali">
+        </div>
+        <div class="s5-img-cap">Pather Panchali &nbsp;·&nbsp; 1955</div>
+        <div class="s5-img-sub">Satyajit Ray &nbsp;·&nbsp; A village, a boy, a world</div>
+      </div>
+      <!-- Masaan — landscape still, full colour -->
+      <div class="s5-img-wrap landscape">
+        <div class="s5-img-inner">
+          <img src="Masaan.jpeg" alt="Masaan">
+        </div>
+        <div class="s5-img-cap">Masaan &nbsp;·&nbsp; 2015</div>
+        <div class="s5-img-sub">Neeraj Ghaywan &nbsp;·&nbsp; Grief beside the Ganges</div>
+      </div>
+    </div>
+    <div class="rule-sm" style="margin-top:18px"></div>
+    <div class="qt" style="margin-top:14px;font-size:clamp(14px,1.6vw,20px);opacity:.7">
+      "Cinema is a mirror by which we often see ourselves."
+    </div>
+    <div class="attr">— Martin Scorsese</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 6 · INTERACTIVE AUDIENCE Q
+════════════════════════════════════════ -->
+<div class="slide" data-n="7">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,#080510,#030105)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;max-width:820px;gap:0">
+    <div class="pill"><div class="dot"></div>Audience Moment</div>
+    <div class="s6-hand">🙋</div>
+    <div class="h2" style="max-width:680px;line-height:1.45;margin-top:10px">
+      Think of a film that made you <span class="gold">cry.</span>
+    </div>
+    <div class="rule"></div>
+    <div class="body">
+      Don't tell me the film name.<br>
+      Tell me — what <em>feeling</em> hit you?
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 7 · COLOR / DUNE
+════════════════════════════════════════ -->
+<div class="slide" data-n="8">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,#190900,#070300)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 50px;gap:0">
+    <div class="lbl">Element II &nbsp;·&nbsp; Color</div>
+    <div class="h2">Color is <span class="gold">Information</span></div>
+    <div class="palettes">
+      <div class="pal-block">
+        <div class="swatches arr">
+          <div class="sw"></div><div class="sw"></div><div class="sw"></div><div class="sw"></div>
+        </div>
+        <div class="pal-name">Arrakis</div>
+        <div class="pal-sub">Power · Danger · Survival</div>
+      </div>
+      <div style="display:flex;align-items:center"><div class="vs">·</div></div>
+      <div class="pal-block">
+        <div class="swatches cal">
+          <div class="sw"></div><div class="sw"></div><div class="sw"></div><div class="sw"></div>
+        </div>
+        <div class="pal-name">Caladan</div>
+        <div class="pal-sub">Memory · Safety · Loss</div>
+      </div>
+      <div style="display:flex;align-items:center"><div class="vs">·</div></div>
+      <div class="pal-block">
+        <div class="swatches gei">
+          <div class="sw"></div><div class="sw"></div><div class="sw"></div><div class="sw"></div>
+        </div>
+        <div class="pal-name">Geidi Prime</div>
+        <div class="pal-sub">Control · Industry · Death</div>
+      </div>
+    </div>
+    <div class="s8-vid-wrap">
+      <video class="s8-vid" id="dune-vid" src="dune colors.mp4" muted playsinline></video>
+    </div>
+    <div class="s8-vid-ctrl">
+      <button class="s8-play-btn" onclick="toggleDuneVid(this)" aria-label="Play">▶</button>
+      <span class="s8-play-lbl">Dune · Color Study</span>
+    </div>
+    <div class="rule-sm" style="margin-top:12px"></div>
+    <div class="body" style="margin-top:10px">
+      Denis Villeneuve chose every color to tell a story without a single word.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 8 · COLOR ACTIVITY
+════════════════════════════════════════ -->
+<div class="slide" data-n="9">
+  <img src="Joker.jpg.webp" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none">
+  <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.92) 0%,rgba(0,0,0,.82) 38%,rgba(0,0,0,.45) 62%,rgba(0,0,0,.08) 100%);pointer-events:none"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0;align-items:flex-start;max-width:960px;width:100%">
+    <div class="pill"><div class="dot"></div>Audience Moment · Color</div>
+    <div class="h2" style="text-align:left;font-size:clamp(24px,4vw,50px)">What do you <span class="gold">see?</span></div>
+    <div class="rule-sm" style="margin:16px 0;margin-left:0;width:48px"></div>
+    <div class="body" style="text-align:left;max-width:400px;font-size:clamp(13px,1.5vw,18px)">
+      Look at this image.<br>
+      What emotion does the color tell you?<br>
+      What is this character feeling?
+    </div>
+    <div class="attr" style="margin-top:20px;text-align:left">No wrong answers &nbsp;·&nbsp; Cinema speaks through color</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 9 · DIALOGUE / GOLLUM
+════════════════════════════════════════ -->
+<div class="slide" data-n="10">
+  <div class="s9-cave"></div>
+  <div class="vignette"></div>
+  <div class="drip" style="left:22%"></div>
+  <div class="drip" style="left:48%;opacity:.5"></div>
+  <div class="drip" style="left:72%;opacity:.7"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="lbl">Element III &nbsp;·&nbsp; Dialogue</div>
+    <div class="gollum-row">
+      <div class="gollum-img-wrap">
+        <img src="Gollum.jpg" alt="Gollum" class="gollum-img">
+      </div>
+      <div>
+        <div class="gollum">
+          "We wants it,<br>we <span class="gold">needs</span> it.<br>Must have the precious."
+        </div>
+        <div class="gollum-attr">— Gollum / Sméagol &nbsp;·&nbsp; The Lord of the Rings</div>
+        <div class="rule" style="width:100px;margin-top:18px"></div>
+        <div class="pill" style="margin-top:18px;margin-bottom:0"><div class="dot"></div>Dialogue Guessing Game</div>
+        <div class="body" style="margin-top:12px;text-align:left">
+          One character. Two voices. An entire psychology — in dialogue alone.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 10 · PUZZLE / TENET
+════════════════════════════════════════ -->
+<div class="slide" data-n="11">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 48% 52%,#07061a 0%,#020209 55%,#000000 100%)"></div>
+  <div class="vignette"></div>
+
+  <!-- Floating puzzle fragment layer -->
+  <div class="pz-canvas">
+    <!-- Fragments -->
+    <div class="pz-frag" style="width:90px;height:68px;top:8%;left:5%;--r:-12deg;animation:pz-float 7.1s ease-in-out infinite;animation-delay:0s"></div>
+    <div class="pz-frag" style="width:60px;height:48px;top:14%;left:18%;--r:8deg;animation:pz-float 8.4s ease-in-out infinite;animation-delay:-2s"></div>
+    <div class="pz-frag" style="width:78px;height:55px;top:6%;right:9%;--r:15deg;animation:pz-float 6.8s ease-in-out infinite;animation-delay:-1.2s"></div>
+    <div class="pz-frag" style="width:52px;height:40px;top:22%;right:4%;--r:-7deg;animation:pz-float 9.2s ease-in-out infinite;animation-delay:-3.5s"></div>
+    <div class="pz-frag" style="width:100px;height:44px;bottom:18%;left:4%;--r:5deg;animation:pz-float 7.6s ease-in-out infinite;animation-delay:-0.8s"></div>
+    <div class="pz-frag" style="width:64px;height:56px;bottom:10%;left:20%;--r:-18deg;animation:pz-float 8.0s ease-in-out infinite;animation-delay:-4.1s"></div>
+    <div class="pz-frag" style="width:72px;height:50px;bottom:22%;right:6%;--r:11deg;animation:pz-float 7.3s ease-in-out infinite;animation-delay:-1.7s"></div>
+    <div class="pz-frag" style="width:48px;height:62px;bottom:8%;right:18%;--r:-9deg;animation:pz-float 8.9s ease-in-out infinite;animation-delay:-2.9s"></div>
+    <div class="pz-frag" style="width:55px;height:38px;top:40%;left:2%;--r:20deg;animation:pz-float 6.5s ease-in-out infinite;animation-delay:-0.4s"></div>
+    <div class="pz-frag" style="width:42px;height:60px;top:38%;right:2%;--r:-14deg;animation:pz-float 7.9s ease-in-out infinite;animation-delay:-3.0s"></div>
+
+    <!-- Motif scatter labels -->
+    <div class="pz-motif" style="top:11%;left:6%;animation-delay:0s">⟳ TENET ⟳<br><span class="pz-motif-sym">↺</span></div>
+    <div class="pz-motif" style="top:9%;right:7%;animation-delay:-1.8s">▣ MEMENTO<br><span class="pz-motif-sym">⋯</span></div>
+    <div class="pz-motif" style="bottom:14%;left:5%;animation-delay:-3.2s">◈ INCEPTION<br><span class="pz-motif-sym">⌀</span></div>
+    <div class="pz-motif" style="bottom:12%;right:6%;animation-delay:-0.6s">⁂ TARANTINO<br><span class="pz-motif-sym">↯</span></div>
+  </div>
+
+  <!-- Central SVG: film reel + maze/timeline hybrid -->
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+    <svg class="pz-reel-svg" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="rgba(201,168,76,0.7)"/>
+        </marker>
+        <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="rgba(201,168,76,0.45)"/>
+        </marker>
+        <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="rgba(201,168,76,0.3)"/>
+        </marker>
+        <radialGradient id="glowCore" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.9"/>
+          <stop offset="40%" stop-color="#c9a84c" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="reelGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Outer reel glow halo -->
+      <circle cx="150" cy="150" r="118" fill="url(#reelGlow)"/>
+
+      <!-- Outer reel ring (dashed) -->
+      <circle cx="150" cy="150" r="115" stroke="rgba(201,168,76,0.22)" stroke-width="1.2"
+              stroke-dasharray="8 5" class="pz-flow-slow"/>
+
+      <!-- Sprocket holes around ring -->
+      <circle cx="150" cy="35"  r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="228" cy="73"  r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="265" cy="150" r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="228" cy="227" r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="150" cy="265" r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="72"  cy="227" r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="35"  cy="150" r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+      <circle cx="72"  cy="73"  r="5" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+
+      <!-- Inner reel ring -->
+      <circle cx="150" cy="150" r="78" stroke="rgba(201,168,76,0.18)" stroke-width="0.8"
+              stroke-dasharray="4 6" class="pz-flow-slow"/>
+
+      <!-- Branching/looping time arrows (bezier paths) -->
+      <!-- Forward path: left to right -->
+      <path d="M 55,150 C 80,120 120,130 150,150 C 180,170 220,160 245,150"
+            stroke="rgba(201,168,76,0.65)" stroke-width="1.4" stroke-dasharray="6 4"
+            marker-end="url(#arr1)" class="pz-flow" filter="url(#glow)"/>
+
+      <!-- Inverted path: loops back -->
+      <path d="M 245,155 C 230,185 190,195 160,175 C 130,155 100,165 75,180 C 60,188 55,170 58,158"
+            stroke="rgba(201,168,76,0.45)" stroke-width="1.1" stroke-dasharray="5 5"
+            marker-end="url(#arr2)" class="pz-flow"/>
+
+      <!-- Branching split (fork) -->
+      <path d="M 148,148 C 135,115 115,95 95,80"
+            stroke="rgba(201,168,76,0.32)" stroke-width="0.9" stroke-dasharray="4 6"
+            marker-end="url(#arr3)" class="pz-flow"/>
+      <path d="M 152,148 C 165,115 185,95 205,80"
+            stroke="rgba(201,168,76,0.32)" stroke-width="0.9" stroke-dasharray="4 6"
+            marker-end="url(#arr3)" class="pz-flow"/>
+
+      <!-- Loop back arc from bottom -->
+      <path d="M 152,152 C 170,210 200,230 220,215 C 240,200 240,170 225,155"
+            stroke="rgba(201,168,76,0.28)" stroke-width="0.8" stroke-dasharray="3 7"
+            marker-end="url(#arr3)"/>
+
+      <!-- Center glow node -->
+      <circle cx="150" cy="150" r="22" fill="url(#glowCore)" class="pz-glow-pulse" style="animation:pz-glow-pulse 4s ease-in-out infinite"/>
+      <circle cx="150" cy="150" r="10" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.6)" stroke-width="1.2"/>
+      <circle cx="150" cy="150" r="3"  fill="rgba(201,168,76,0.9)"/>
+
+      <!-- Reel spokes -->
+      <line x1="150" y1="140" x2="150" y2="100" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"/>
+      <line x1="160" y1="147" x2="194" y2="127" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"/>
+      <line x1="160" y1="157" x2="194" y2="177" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"/>
+      <line x1="150" y1="160" x2="150" y2="200" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"/>
+      <line x1="140" y1="157" x2="106" y2="177" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"/>
+      <line x1="140" y1="147" x2="106" y2="127" stroke="rgba(201,168,76,0.14)" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <!-- Text content -->
+  <div class="z2" style="padding:0 60px;gap:0;justify-content:flex-end;padding-bottom:clamp(48px,7vh,80px)">
+    <div class="lbl">Element IV &nbsp;·&nbsp; Puzzle</div>
+    <div class="h2" style="font-size:clamp(1.4rem,3.2vw,2.4rem);max-width:600px;line-height:1.25;text-align:center">
+      Cinema is a <span class="gold">puzzle</span><br>you solve while watching.
+    </div>
+    <div style="margin-top:clamp(10px,1.8vh,18px);font-family:'Cinzel',serif;font-size:clamp(7px,.68vw,9px);letter-spacing:.42em;color:rgba(201,168,76,.38);text-transform:uppercase;text-align:center">
+      Tenet &nbsp;&nbsp;·&nbsp;&nbsp; Memento &nbsp;&nbsp;·&nbsp;&nbsp; Inception &nbsp;&nbsp;·&nbsp;&nbsp; Tarantino
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 11 · MOVEMENT / KUROSAWA
+════════════════════════════════════════ -->
+<div class="slide" data-n="13">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 45%,#04040e,#010108)"></div>
+  <div class="s11-lines"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 50px;gap:0">
+    <div class="lbl">Element V &nbsp;·&nbsp; Movement</div>
+    <div class="h2">Kurosawa &amp; the <span class="gold">Six Movements</span></div>
+    <div class="mvt-grid">
+      <div class="mvt-card">
+        <span class="mvt-icon">🌿</span>
+        <div class="mvt-name">Nature</div>
+        <div class="mvt-desc">Wind · Rain · Fire<br>The world moves first</div>
+      </div>
+      <div class="mvt-card">
+        <span class="mvt-icon">🏔️</span>
+        <div class="mvt-name">Background</div>
+        <div class="mvt-desc">Landscape · Mist · Depth<br>Scale dwarfs the human</div>
+      </div>
+      <div class="mvt-card">
+        <span class="mvt-icon">⚔️</span>
+        <div class="mvt-name">Group</div>
+        <div class="mvt-desc">Army · Crowd · Formation<br>Chaos made visible</div>
+      </div>
+      <div class="mvt-card">
+        <span class="mvt-icon">🥷</span>
+        <div class="mvt-name">Individual</div>
+        <div class="mvt-desc">One samurai · One gesture<br>Stillness before action</div>
+      </div>
+      <div class="mvt-card">
+        <span class="mvt-icon">🎥</span>
+        <div class="mvt-name">Camera</div>
+        <div class="mvt-desc">Tracking · Telephoto<br>The eye has a point of view</div>
+      </div>
+      <div class="mvt-card">
+        <span class="mvt-icon">✂️</span>
+        <div class="mvt-name">Cut</div>
+        <div class="mvt-desc">Rhythm · Montage · Silence<br>What you don't show</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 13 · SEVEN SAMURAI — SEQUENCE I
+════════════════════════════════════════ -->
+<div class="slide" data-n="12">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 45% 50%,#05050a,#010106)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="lbl">Element V &nbsp;·&nbsp; Movement · Seven Samurai</div>
+    <div class="h2" style="margin-bottom:0">Kurosawa in <span class="gold">Motion</span></div>
+    <div class="big-vid-frame">
+      <video class="big-vid" id="bvid1" src="Seven Samurai 1.mp4" preload="metadata" muted playsinline></video>
+    </div>
+    <div class="big-vid-ctrl">
+      <button class="big-play-btn" onclick="toggleBigVid('bvid1',this)" aria-label="Play">▶</button>
+      <span class="big-vid-lbl">Sequence I &nbsp;·&nbsp; Nature · Background · Group</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 14 · SEVEN SAMURAI — SEQUENCE II
+════════════════════════════════════════ -->
+<div class="slide" data-n="14">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 55% 50%,#05050a,#010106)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="lbl">Element V &nbsp;·&nbsp; Movement · Seven Samurai</div>
+    <div class="h2" style="margin-bottom:0">Kurosawa in <span class="gold">Motion</span></div>
+    <div class="big-vid-frame">
+      <video class="big-vid" id="bvid2" src="seven Samurai 2.mp4" preload="metadata" muted playsinline></video>
+    </div>
+    <div class="big-vid-ctrl">
+      <button class="big-play-btn" onclick="toggleBigVid('bvid2',this)" aria-label="Play">▶</button>
+      <span class="big-vid-lbl">Sequence II &nbsp;·&nbsp; Individual · Camera · Cut</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 15 · FANTASY / GHIBLI
+════════════════════════════════════════ -->
+<div class="slide" data-n="15">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#060310,#020108)"></div>
+  <div class="stars-layer" id="starsLayer"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="lbl">Element VI &nbsp;·&nbsp; Fantasy</div>
+    <div class="s12-moon">🌙</div>
+    <div class="h2">We all carry a <span class="gold">fantasy</span> inside us.</div>
+    <div class="rule"></div>
+    <div class="fantasy-grid">
+      <div class="fantasy-card">
+        <span class="fantasy-icon">🪄</span>
+        <div class="fantasy-title">The Magic Pencil</div>
+        <div class="fantasy-desc">The Shakalaka Boom Boom pencil. A Hogwarts letter that never came. We spent years waiting for an invitation to a world just beyond the ordinary.</div>
+      </div>
+      <div class="fantasy-card">
+        <span class="fantasy-icon">💫</span>
+        <div class="fantasy-title">The SRK Romance</div>
+        <div class="fantasy-desc">Arms wide open in the rain. A love that never gives up. Shah Rukh Khan built a version of romance so impossible — we believed it anyway.</div>
+      </div>
+      <div class="fantasy-card">
+        <span class="fantasy-icon">🎶</span>
+        <div class="fantasy-title">The Spontaneous Song</div>
+        <div class="fantasy-desc">Five songs mid-crisis. Everyone knows the steps. In reality, nobody does this. In cinema, everyone secretly wishes they could.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 16 · QUIZ — GHIBLI TREND
+════════════════════════════════════════ -->
+<div class="slide" data-n="16">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#04030a,#010106)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 clamp(30px,5vw,70px);gap:0;width:100%;max-width:960px">
+    <div class="pill"><div class="dot"></div>Audience Quiz · Fantasy</div>
+    <div class="quiz-row">
+      <div class="quiz-img-frame">
+        <img src="Ghibli.jpg" alt="Studio Ghibli" class="quiz-img portrait">
+      </div>
+      <div class="quiz-txt">
+        <div class="quiz-prompt">Question 1 of 3</div>
+        <div class="quiz-q-main">What is this <span class="gold">trend?</span></div>
+        <div class="quiz-clue">Look at the image.<br>What visual style do you see?<br>What kind of world does it create?</div>
+        <div class="rule-sm" style="margin:14px 0;width:40px"></div>
+        <div class="quiz-q-main" style="font-size:clamp(16px,2.2vw,28px)">Which <span class="gold">movie</span> is this?</div>
+        <div class="quiz-answer" id="qa16">
+          <div class="qa-label">Trend</div>
+          <div class="qa-ans">Studio Ghibli aesthetic · Hand-drawn magic realism</div>
+        </div>
+        <button class="quiz-reveal-btn" onclick="revealQuiz('qa16',this)">Reveal Answer ▾</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 17 · QUIZ — PLATFORM 9¾
+════════════════════════════════════════ -->
+<div class="slide" data-n="17">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%,#050408,#010104)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 clamp(30px,5vw,70px);gap:0;width:100%;max-width:960px">
+    <div class="pill"><div class="dot"></div>Audience Quiz · Puzzle</div>
+    <div class="quiz-row">
+      <div class="quiz-img-frame">
+        <img src="platform 934.jpg" alt="Platform 9¾" class="quiz-img landscape" style="object-fit:cover;object-position:0% 30%">
+      </div>
+      <div class="quiz-txt">
+        <div class="quiz-prompt">Question 2 of 3</div>
+        <div class="quiz-q-main">Which <span class="gold">platform number</span><br>is this? And the movie?</div>
+        <div class="quiz-clue">Look at the sign carefully.<br>A trolley vanishes into a wall.<br>What world does this belong to?</div>
+        <div class="quiz-answer" id="qa17">
+          <div class="qa-label">Platform Number</div>
+          <div class="qa-ans"><span class="gold">Platform 9¾</span> · King's Cross, London</div>
+          <div class="qa-label" style="margin-top:10px">Film</div>
+          <div class="qa-ans">Harry Potter and the Philosopher's Stone · 2001</div>
+        </div>
+        <button class="quiz-reveal-btn" onclick="revealQuiz('qa17',this)">Reveal Answer ▾</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 18 · QUIZ — KRISH MASK
+════════════════════════════════════════ -->
+<div class="slide" data-n="18">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#050408,#010104)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 clamp(30px,5vw,70px);gap:0;width:100%;max-width:960px">
+    <div class="pill"><div class="dot"></div>Audience Quiz · Dialogue</div>
+    <div class="quiz-row">
+      <div class="quiz-img-frame">
+        <img src="Krish.jpg" alt="Krish mask" class="quiz-img portrait">
+      </div>
+      <div class="quiz-txt">
+        <div class="quiz-prompt">Question 3 of 3</div>
+        <div class="quiz-q-main">Who is this <span class="gold">character?</span></div>
+        <div class="quiz-clue">A mask. A cape.<br>India's first superhero.<br>Strength beyond human limits.</div>
+        <div class="quiz-hint">Bonus: Name the actor · Name the film series</div>
+        <div class="quiz-answer" id="qa18">
+          <div class="qa-label">Character</div>
+          <div class="qa-ans"><span class="gold">Krrish</span> · India's first superhero</div>
+          <div class="qa-label" style="margin-top:10px">Actor · Film Series</div>
+          <div class="qa-ans">Hrithik Roshan · Koi… Mil Gaya / Krrish</div>
+        </div>
+        <button class="quiz-reveal-btn" onclick="revealQuiz('qa18',this)">Reveal Answer ▾</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 19 · DIRECTORS
+════════════════════════════════════════ -->
+<div class="slide" data-n="19">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,#07060e,#020206)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 clamp(24px,4vw,60px);gap:0;width:100%">
+    <div class="pill"><div class="dot"></div>Audience Moment</div>
+    <div class="h2" style="margin-bottom:4px">What <span class="gold">elements</span> do they master?</div>
+    <div class="lbl" style="margin-bottom:0;margin-top:6px">Look at each director — which of the Six Elements defines their craft?</div>
+    <div class="dir-grid">
+
+      <!-- Christopher Nolan -->
+      <div class="dir-card">
+        <div class="dir-poster">
+          <img src="Inception.webp" alt="Inception" onerror="this.parentNode.innerHTML='<div class=\'dir-poster-ph\'>🌀</div>'">
+        </div>
+        <div class="dir-name">Christopher Nolan</div>
+        <div class="dir-film">Inception · 2010</div>
+        <div class="dir-tags">
+          <span class="dir-tag">Puzzle</span>
+          <span class="dir-tag">Movement</span>
+          <span class="dir-tag">Dialogue</span>
+        </div>
+      </div>
+
+      <!-- RR Rajamouli -->
+      <div class="dir-card">
+        <div class="dir-poster">
+          <img src="Bahubali.jpg" alt="Bahubali" onerror="this.parentNode.innerHTML='<div class=\'dir-poster-ph\'>🏹</div>'">
+        </div>
+        <div class="dir-name">RR Rajamouli</div>
+        <div class="dir-film">Bahubali · 2015</div>
+        <div class="dir-tags">
+          <span class="dir-tag">Movement</span>
+          <span class="dir-tag">Fantasy</span>
+          <span class="dir-tag">Color</span>
+        </div>
+      </div>
+
+      <!-- Anurag Kashyap -->
+      <div class="dir-card">
+        <div class="dir-poster">
+          <img src="gangs of wasseypur.webp" alt="Gangs of Wasseypur" onerror="this.parentNode.innerHTML='<div class=\'dir-poster-ph\'>🔫</div>'">
+        </div>
+        <div class="dir-name">Anurag Kashyap</div>
+        <div class="dir-film">Gangs of Wasseypur · 2012</div>
+        <div class="dir-tags">
+          <span class="dir-tag">Reality</span>
+          <span class="dir-tag">Dialogue</span>
+          <span class="dir-tag">Color</span>
+        </div>
+      </div>
+
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <button class="dir-reveal-btn" id="revealBtn" onclick="revealElements()">Reveal Elements ▾</button>
+      <div class="rule-sm" style="margin-top:16px"></div>
+      <div class="body" style="margin-top:10px;font-size:clamp(12px,1.3vw,15px)">
+        Great directors don't use one element — they <span class="gold">layer</span> them all.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 20 · SUMMARY
+════════════════════════════════════════ -->
+<div class="slide" data-n="20">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,#080808,#020202)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="gap:0">
+    <div class="lbl">The Complete Picture</div>
+    <div class="h2" style="margin-bottom:10px">Cinema is <span class="gold">all of us.</span></div>
+    <div class="hex-wrap">
+      <!-- SVG connector lines -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- lines from center to each node -->
+        <line x1="230" y1="230" x2="230" y2="55"  stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <line x1="230" y1="230" x2="404" y2="143" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <line x1="230" y1="230" x2="404" y2="318" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <line x1="230" y1="230" x2="230" y2="406" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <line x1="230" y1="230" x2="56"  y2="318" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <line x1="230" y1="230" x2="56"  y2="143" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+        <!-- hexagon outline -->
+        <polygon points="230,55 404,143 404,318 230,406 56,318 56,143" fill="none" stroke="rgba(201,168,76,.08)" stroke-width="1" stroke-dasharray="4,4"/>
+      </svg>
+
+      <!-- Center -->
+      <div class="hex-center">🎬</div>
+
+      <!-- 6 nodes at hexagon vertices (~radius 175px from center of 460px box) -->
+      <!-- top -->
+      <div class="hnode" style="top:12%;left:50%">
+        <span class="hnode-icon">🎞️</span>
+        <span class="hnode-lbl">Reality</span>
+      </div>
+      <!-- top-right -->
+      <div class="hnode" style="top:31%;left:88%">
+        <span class="hnode-icon">🎨</span>
+        <span class="hnode-lbl">Color</span>
+      </div>
+      <!-- bottom-right -->
+      <div class="hnode" style="top:69%;left:88%">
+        <span class="hnode-icon">💬</span>
+        <span class="hnode-lbl">Dialogue</span>
+      </div>
+      <!-- bottom -->
+      <div class="hnode" style="top:88%;left:50%">
+        <span class="hnode-icon">🧩</span>
+        <span class="hnode-lbl">Puzzle</span>
+      </div>
+      <!-- bottom-left -->
+      <div class="hnode" style="top:69%;left:12%">
+        <span class="hnode-icon">⚡</span>
+        <span class="hnode-lbl">Movement</span>
+      </div>
+      <!-- top-left -->
+      <div class="hnode" style="top:31%;left:12%">
+        <span class="hnode-icon">✨</span>
+        <span class="hnode-lbl">Fantasy</span>
+      </div>
+    </div>
+    <div class="body" style="margin-top:2px;font-size:clamp(12px,1.3vw,16px);letter-spacing:.1em">
+      Reality &nbsp;·&nbsp; Color &nbsp;·&nbsp; Dialogue &nbsp;·&nbsp; Puzzle &nbsp;·&nbsp; Movement &nbsp;·&nbsp; Fantasy
+    </div>
+    <div class="contrarian-wrap">
+      <div class="contrarian-lbl">The Exception · Great directors break their own rules</div>
+      <div class="contrarian-row">
+        <div class="contrarian-ex">
+          <span class="contrarian-dir">Priyadarshan</span>
+          <span class="contrarian-note">A laugh dropped into the centre of crisis — Dialogue subverts tension instead of sustaining it, and the fear hits harder for it</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 14 · CLOSING QUOTE
+════════════════════════════════════════ -->
+<div class="slide" data-n="21">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,#0f0900,#040200)"></div>
+  <div class="vignette"></div>
+  <div class="z2" style="padding:0 60px;gap:0">
+    <div class="candle">🕯️</div>
+    <div class="closing-q">
+      "Every one of us<br>is a <span class="gold">storyteller."</span>
+    </div>
+    <div class="rule" style="margin-top:26px;width:120px"></div>
+    <div class="credits">Cinema Paradiso &nbsp;·&nbsp; Toastmasters Theme Master &nbsp;·&nbsp; 2026</div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Nav buttons -->
+<button class="nav" id="pBtn" onclick="go(-1)">&#8249;</button>
+<button class="nav" id="nBtn" onclick="go(1)">&#8250;</button>
+
+<!-- Progress dots -->
+<div class="prog" id="prog"></div>
+<div class="kbd">← → to navigate &nbsp;·&nbsp; Space to advance</div>
+
+<script>
+const TOTAL = 21;
+let cur = 1;
+
+// ── Film chrome sprocket holes ──
+function buildChrome(id) {
+  const el = document.getElementById(id);
+  const n = Math.ceil(window.innerWidth / 28) + 4;
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement('div');
+    d.className = 'sp';
+    el.appendChild(d);
+  }
+}
+buildChrome('fcTop');
+buildChrome('fcBot');
+
+// ── Progress dots ──
+const pg = document.getElementById('prog');
+for (let i = 1; i <= TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'pd' + (i === 1 ? ' on' : '');
+  d.onclick = () => goTo(i);
+  pg.appendChild(d);
+}
+
+// ── Theater seats (slide 2) ──
+const sr = document.getElementById('seatRow');
+for (let i = 0; i < 26; i++) {
+  const s = document.createElement('div');
+  s.className = 'seat';
+  sr.appendChild(s);
+}
+
+// ── Stars (slide 12) ──
+const sl = document.getElementById('starsLayer');
+for (let i = 0; i < 90; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2 + 0.8;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*5}s;--dl:${Math.random()*5}s;--op:${0.35+Math.random()*0.55}`;
+  sl.appendChild(s);
+}
+
+// ── Slide 1 background wrapper fix ──
+// The s1 class is on the slide, not a child; let's patch it.
+document.querySelector('[data-n="1"]').style.cssText += ';background:radial-gradient(ellipse at 50% 40%,#1a1000,#0a0800 45%,#000 100%)';
+
+// ── Navigation ──
+function goTo(n) {
+  if (n < 1 || n > TOTAL) return;
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.pd').forEach((d, i) => d.classList.toggle('on', i + 1 === n));
+  document.querySelector(`.slide[data-n="${n}"]`).classList.add('active');
+  document.getElementById('ctr').textContent = String(n).padStart(2,'0') + ' / ' + String(TOTAL).padStart(2,'0');
+  cur = n;
+  document.getElementById('pBtn').style.opacity = n === 1 ? '0.2' : '1';
+  document.getElementById('nBtn').style.opacity = n === TOTAL ? '0.2' : '1';
+}
+
+function go(d) { goTo(cur + d); }
+
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
+  else if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+});
+
+// ── Touch ──
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 48) go(dx < 0 ? 1 : -1);
+}, {passive:true});
+
+// ── Fullscreen ──
+function toggleFS() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+// Init opacity of nav
+document.getElementById('pBtn').style.opacity = '0.2';
+
+// Apply s2 beam (defined in CSS already; just need dust particles)
+const s2p = document.querySelector('[data-n="2"]');
+const pWrap = document.createElement('div');
+pWrap.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none';
+for (let i = 0; i < 36; i++) {
+  const p = document.createElement('span');
+  const dur = (3 + Math.random() * 5).toFixed(1);
+  const delay = (Math.random() * 6).toFixed(1);
+  p.style.cssText = `position:absolute;width:2px;height:2px;border-radius:50%;background:rgba(255,255,255,.28);top:${(Math.random()*65+5).toFixed(1)}%;left:${(Math.random()*88+5).toFixed(1)}%;animation:float2 ${dur}s ${delay}s ease-in-out infinite`;
+  pWrap.appendChild(p);
+}
+s2p.insertBefore(pWrap, s2p.firstChild);
+
+// Dune video (slide 8)
+// Audience quiz reveal
+function revealQuiz(id, btn) {
+  document.getElementById(id).classList.add('revealed');
+  btn.textContent = 'Answer Revealed ✓';
+  btn.classList.add('done');
+}
+
+// Directors quiz reveal
+function revealElements() {
+  document.querySelectorAll('.dir-tags').forEach(el => el.classList.add('revealed'));
+  const btn = document.getElementById('revealBtn');
+  btn.textContent = 'Elements Revealed ✓';
+  btn.classList.add('done');
+}
+
+function toggleDuneVid(btn) {
+  const v = document.getElementById('dune-vid');
+  if (v.paused) { v.play(); btn.textContent = '⏸'; }
+  else { v.pause(); btn.textContent = '▶'; }
+}
+document.getElementById('dune-vid').addEventListener('ended', () => {
+  document.querySelector('.s8-play-btn').textContent = '▶';
+});
+
+// Seven Samurai big video players (slides 13-14)
+function toggleBigVid(id, btn) {
+  const v = document.getElementById(id);
+  if (v.paused) { v.play(); btn.textContent = '⏸'; }
+  else { v.pause(); btn.textContent = '▶'; }
+}
+['bvid1','bvid2'].forEach(id => {
+  const v = document.getElementById(id);
+  if (v) v.addEventListener('ended', () => {
+    v.closest('.z2').querySelector('.big-play-btn').textContent = '▶';
+  });
+});
+
+// Dust float keyframe
+const style = document.createElement('style');
+style.textContent = '@keyframes float2{0%,100%{transform:translateY(0);opacity:.28}50%{transform:translateY(-18px);opacity:.7}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
